@@ -8,10 +8,21 @@ export const connectToServer = () => {
 
 const addListeners = (socket: Socket) => {
   const serverStatusLaberl = document.querySelector("#server-status")!;
+  const clientsUl = document.querySelector("#clients-ul")!;
+
   socket.on("connect", () => {
-    serverStatusLaberl.innerHTML = 'connected';
+    serverStatusLaberl.innerHTML = "connected";
   });
+
   socket.on("disconnect", () => {
-    serverStatusLaberl.innerHTML = 'disconnected';
+    serverStatusLaberl.innerHTML = "disconnected";
+  });
+
+  socket.on("clients-updated", (clients: string[]) => {
+    let clientsHtml = "";
+    clients.forEach((client) => {
+      clientsHtml += `<li>${client}</li>`;
+    });
+    clientsUl.innerHTML = clientsHtml;
   });
 };
